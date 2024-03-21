@@ -7,18 +7,17 @@ output: html_document
 
 ```{r}
 library(sf)
-library(terra)
 library(dplyr)
-library(tmap)    
 library(leaflet)
 library(ggplot2)
 library(geojsonio)
+library(tidyverse)
+library(leaflegend)
 #V_Modified = Full_Data %>%  filter(year > 1963)
 #Party_Modified = Party_Data %>% filter(year > 1963)
 #saveRDS(V_Modified, file = "V_Modified.RDS")
 #saveRDS(Party_Modified, file = "Party_Modified.RDS")
 V_Modified = readRDS("V_Modified.RDS")
 Party_Modified = readRDS("Party_Modified.RDS")
-map = geojson_read("map.geojson", what = "sp")
-
+geo2 = geojson_read("merged.geojson", what = "sp")
 ```
