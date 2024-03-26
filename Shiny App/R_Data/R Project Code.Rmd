@@ -13,6 +13,8 @@ library(ggplot2)
 library(geojsonio)
 library(tidyverse)
 library(leaflegend)
+library(shinyWidgets)
+setwd("~/NYCDSA/Second Project/Git_Workspace/Shiny App/R_Data")
 #V_Modified = Full_Data %>%  filter(year > 1963)
 #Party_Modified = Party_Data %>% filter(year > 1963)
 #saveRDS(V_Modified, file = "V_Modified.RDS")
@@ -20,4 +22,34 @@ library(leaflegend)
 V_Modified = readRDS("V_Modified.RDS")
 Party_Modified = readRDS("Party_Modified.RDS")
 geo2 = geojson_read("merged.geojson", what = "sp")
+```
+
+
+```{r}
+#ggplot(V_Modified, aes(x= year, y = v2x_libdem)) +geom_smooth(aes()) + labs(x="Year", y= "Democracy Index")
+
+V_Modified$country_name <- gsub('Türkiye', 'Turkey', V_Modified$country_name)
+
+
+Party_Modified = Party_Modified %>% select(country_name, v2paenname, year, v2xpa_popul, v2xpa_antiplural, v2pagovsup)
+Just_Lib = V_Modified %>% select(country_name, year, v2x_libdem)
+
+merged_data = merge(Party_Modified, Just_Lib, by = c("country_name","year"))
+merged_data = na.omit(merged_data)
+merged_data = merged_data %>% mutate (log(v2x_libdem), log(v2xpa_popul), log(v2xpa_antiplural))
+summary(lm(v2x_libdem~ v2xpa_popul, merged_data))
+merged_data$v2pagovsup<-as.factor(merged_data$v2pagovsup)
+#merged_data$year<-as.factor(merged_data$year)
+merged_data <- merged_data[-which(merged_data$year=='1965'),]
+```
+
+```{r}
+
+#ggplot(data = merged_data, aes(x = log(v2xpa_popul), y = v2x_libdem))  + geom_point() +
+  #stat_smooth(method = "lm", col = "red") + labs(color='Country', x="Level of Populism", y= "Democracy Index")
+
+ggplot(merged_data, aes(x= year, y = v2xpa_popul, fill = year)) + 
+        geom_bar(stat="identity") +
+  scale_fill_viridis_c(option = "plasma") + 
+        labs(fill='Year', x="Year", y= "Party Populism")
 ```
