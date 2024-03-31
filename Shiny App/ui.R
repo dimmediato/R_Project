@@ -145,7 +145,7 @@ ui <- navbarPage(title = "Democratic Backsliding",
                  # Populism Tab ---- 
                  
                  tabPanel(title = "Populism",
-                          titlePanel("Words that Can Move Mountains"),
+                          titlePanel("Words That Can Move Mountains"),
                           sidebarLayout( sidebarPanel (conditionalPanel(
                             condition = "input.example == 1 || input.example == 2 || input.example == 3", checkboxGroupInput("govsupportcheck", h3("Government Support?"),
                                                                choices = list("Senior Partner (0)" = "0", "Junior Partner (1)" = "1",
@@ -175,12 +175,122 @@ ui <- navbarPage(title = "Democratic Backsliding",
                                      p("Populism is suggested to be the largest, most recent causes of democratic backsliding.
                                                                                         Populism is a rhetoric strategy, where the party incorporates anti-establishment and anti-elite speech into their rhetoric. They also speak of reducing political corruption. 
                                                                                         Populist parties can be pluralist or anti-pluralist, which is whether or not they commit to democratic norms."),
-                                     p("First shown is a general trend in the increase of both populist rhetoric of political parties in all countries,
-                                     as well as an increase in anti-pluralist sentiment in these parties. The V-Dem Project suggests that the two may be correlated."),
+                                     p("First shown is a general trend in a steady increase of populist rhetoric of political parties in all countries,
+                                     but anti-pluralist rhetoric has generally stayed the same on average. The V-Dem Project suggests that the two may be correlated."),
                                                                           p("Following the trends are two semi-log graphs, with x-log for the purpose of increasing R-squared. The Party Populism graph shows that, as populist rhetoric in countries increases, autocratization increases (or rather, the liberal democracy level decreases).
                                                                             Those not represented have the least impact in regards to populism, while those in opposition have the most impact."),
                                                                           p("For anti-pluralism, this trend is seen to be much worse. If these parties have an anti-pluralist rhetoric, then the autocratization is much more likely.
-                                                                          However, different results than the populst trends were seen. Its strongest impact occured when the party was in the government, and its weakest impact was, like with the populist trend, when in the government but not represented.
+                                                                          However, different results than the populist trends were seen. Its strongest impact occurred when the party was in the government, and its weakest impact was, like with the populist trend, when in the government but not represented.
                                                                           No category here was statistically insignificant."))))
-))))
+))),
+
+# Polarization Tab ---- 
+
+tabPanel(title = "Polarization",
+         titlePanel("Torn Apart From the Inside"), 
+         sidebarLayout(sidebarPanel( conditionalPanel( condition = "input.polarizationsubtab == 10",
+           pickerInput("polarizationpicker",
+                       "Eastern Europe:", choices= unique(Eastern_Europe$country_name), 
+                       options = pickerOptions(actionsBox = TRUE, liveSearch=T),  multiple = T, select = "Poland"),
+           pickerInput("polarizationpicker2",
+                       "Latin America:", choices= unique(Latin_America$country_name), 
+                       options = pickerOptions(actionsBox = TRUE, liveSearch=T),  multiple = T, "Bolivia"),
+           pickerInput("polarizationpicker3",
+                       "Middle East:", choices= unique(Middle_East$country_name), 
+                       options = pickerOptions(actionsBox = TRUE, liveSearch=T),  multiple = T, "Turkey"),
+           pickerInput("polarizationpicker4",
+                       "Africa:", choices= unique(Africa$country_name), 
+                       options = pickerOptions(actionsBox = TRUE, liveSearch=T),  multiple = T, "Zimbabwe"),
+           pickerInput("polarizationpicker5",
+                       "Western Europe:", choices= unique(Western_Europe$country_name), 
+                       options = pickerOptions(actionsBox = TRUE, liveSearch=T),  multiple = T, "United States of America"),
+           pickerInput("polarizationpicker6",
+                       "Asia:", choices= unique(Asia$country_name), 
+                       options = pickerOptions(actionsBox = TRUE, liveSearch=T),  multiple = T, "Hong Kong")),
+           conditionalPanel( condition = "input.polarizationsubtab == 11", radioButtons(
+             "radio2", h3("Region"), 
+             choices = list("Eastern Europe" = "1",
+                            "Latin America" = "2",
+                            "Middle East" = "3",
+                            "Africa" = "4",
+                            "Western Europe" = "5",
+                            "Asia" = "6")))), 
+           
+           # Polarization Subtabset ----            
+           
+           mainPanel(tabsetPanel(
+             type = "tabs",
+             id = "polarizationsubtab",
+             tabPanel("Polarization Trend",
+                      value = 10,
+                      plotOutput("polarizationtrend", click = "polarization_click"), verbatimTextOutput("polarizationinfo"),
+                      ),
+             tabPanel("Polarization Regression",
+                      value = 11,
+                      plotOutput("polarizationregression", click = "polarization_click2"), verbatimTextOutput("polarizationinfo2"),
+             ),
+             tabPanel("Description",
+                       value = 11,sidebarPanel(width = 15,p("The V-Dem Project determined that political polarization has remained a significant factor in contributing to the decline in democracy level.
+                                                            The trend here is different from the previous, showing an almost universal rise in polarization in the world (this was tested both on a country-level and on a world-level).
+                                                            Highlighted are the most egregious examples in the \"political regions\" of the world, with the highlighted countries being the ones with the highest level of political polarization."),
+                                               p("Next are the linear regressions for each region. Unlike for populism, log was not needed to enhance R-Squared. Also, all regions were statistically significant.
+                                                 Here, Latin America and Western Europe seemed to have political polarization be the strongest as a factor, while in the Middle East political polarization seemed to matter the least.
+                                                 This is likely blamed on the *lack* of polarization possible. Considering in the Middle East most countries are autocracies.")))
+             )))
+           
+         # GINI Tab ---- 
+),
+tabPanel(title = "Inequality",
+         titlePanel("Economic Inequality and Democratic Collapse"), 
+         sidebarLayout(sidebarPanel(conditionalPanel( condition = "input.GINIsubtab == 20", pickerInput("GINIpicker",
+                                                "Eastern Europe:", choices= unique(Eastern_Europe_GINI$country_name), 
+                                                options = pickerOptions(title= "Select One", actionsBox = TRUE, liveSearch=T),  multiple = T),
+                                    pickerInput("GINIpicker2",
+                                                "Latin America:", choices= unique(Latin_America_GINI$country_name), 
+                                                options = pickerOptions(title= "Select One", actionsBox = TRUE, liveSearch=T),  multiple = T, "Colombia"),
+                                    pickerInput("GINIpicker3",
+                                                "Middle East:", choices= unique(Middle_East_GINI$country_name), 
+                                                options = pickerOptions(title= "Select One", actionsBox = TRUE, liveSearch=T),  multiple = T),
+                                    pickerInput("GINIpicker4",
+                                                "Africa:", choices= unique(Africa_GINI$country_name), 
+                                                options = pickerOptions(title= "Select One", actionsBox = TRUE, liveSearch=T),  multiple = T),
+                                    pickerInput("GINIpicker5",
+                                                "Western Europe:", choices= unique(Western_Europe_GINI$country_name), 
+                                                options = pickerOptions(title= "Select One", actionsBox = TRUE, liveSearch=T),  multiple = T),
+                                    pickerInput("GINIpicker6",
+                                                "Asia:", choices= unique(Asia_GINI$country_name), 
+                                                options = pickerOptions(title= "Select One", actionsBox = TRUE, liveSearch=T),  multiple = T)),
+                                    conditionalPanel( condition = "input.GINIsubtab == 21", radioButtons(
+                                      "radio3", h3("Region"), 
+                                      choices = list("Eastern Europe (1)" = "1",
+                                                     "Latin America (2)" = "2",
+                                                     "Middle East (3)" = "3",
+                                                     "Africa (4)" = "4",
+                                                     "Western Europe (5)" = "5",
+                                                     "Asia (6)" = "6")))),
+                       
+                       # GINI Subtabset ---- 
+                       
+                       mainPanel(tabsetPanel(
+                         type = "tabs",
+                         id = "GINIsubtab",
+                         tabPanel("Inequality Trend",
+                                  value = 20,
+                                  plotOutput("GINItrend", click = "GINI_click"), verbatimTextOutput("GINIinfo")),
+                         tabPanel("Inequality Regression",
+                                  value = 21,
+                                  plotOutput("GINIregression", click = "GINI_regression"), verbatimTextOutput("GINIinfo2")),
+                         tabPanel("Description",
+                                  value = 21,
+                                  sidebarPanel(width = 15, p("A claimed background cause to democratic backsliding is wealth inequality, most often measured by the Gini coefficient: the degree of income inequality in the distribution of wealth.
+                                  The V-Dem Project had Gini as a background cause, but it was removed from the codebook. So, an alternative dataset was used. The results were mixed. With all countries combined, the regression has an extremely weak R-Squared, although is still statistically significant."),
+                                               
+                                  p("Separating by region is a similiar story, with R-Squared being minimal across the board. While the Asian region is the only region not statistically significant, 
+                                    this factor stands out as the only one with no filter have a statistical significance < 2e-16 (Western Europe had the highest R-Squared and lowest statistical significance, though).
+                                    The implication is that wealth may have an effect, but only if the effect can be noticed. Take Colombia for example, a country with fluctuating democracy index AND fluctuating wealth inequality, and how they reflect off of each other.")))
+                         
+                         ))))
+                       
+
+)
                  
