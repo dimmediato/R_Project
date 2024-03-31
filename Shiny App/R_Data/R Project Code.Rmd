@@ -32,15 +32,17 @@ V_Modified$country_name <- gsub('Türkiye', 'Turkey', V_Modified$country_name)
 
 
 Party_Modified = Party_Modified %>% select(country_name, v2paenname, year, v2xpa_popul, v2xpa_antiplural, v2pagovsup)
-Just_Lib = V_Modified %>% select(country_name, year, v2x_libdem)
+Just_Lib = V_Modified %>% select(country_name, year, v2x_libdem, e_regionpol_6C)
 
 merged_data = merge(Party_Modified, Just_Lib, by = c("country_name","year"))
 merged_data = na.omit(merged_data)
 merged_data = merged_data %>% mutate (log(v2x_libdem), log(v2xpa_popul), log(v2xpa_antiplural))
-summary(lm(v2x_libdem~ v2xpa_popul, merged_data))
+#summary(lm(v2x_libdem~ v2xpa_popul, merged_data))
 merged_data$v2pagovsup<-as.factor(merged_data$v2pagovsup)
+V_Modified$e_regionpol_6C<-as.factor(V_Modified$e_regionpol_6C)
 #merged_data$year<-as.factor(merged_data$year)
 merged_data <- merged_data[-which(merged_data$year=='1965'),]
+V_Modified = V_Modified %>% arrange(country_name)
 ```
 
 ```{r}
@@ -48,8 +50,43 @@ merged_data <- merged_data[-which(merged_data$year=='1965'),]
 #ggplot(data = merged_data, aes(x = log(v2xpa_popul), y = v2x_libdem))  + geom_point() +
   #stat_smooth(method = "lm", col = "red") + labs(color='Country', x="Level of Populism", y= "Democracy Index")
 
-ggplot(merged_data, aes(x= year, y = v2xpa_popul, fill = year)) + 
+average_merge = merged_data %>% group_by(year) %>%  summarize(v2xpa_popul = mean(v2xpa_popul), v2xpa_antiplural = mean(v2xpa_antiplural))
+
+ggplot(average_merge, aes(x= year, y = v2xpa_popul, fill = year)) + 
         geom_bar(stat="identity") +
   scale_fill_viridis_c(option = "plasma") + 
         labs(fill='Year', x="Year", y= "Party Populism")
+```
+
+```{r}
+#summary(lm(v2x_libdem~ v2cacamps_osp, V_Modified %>% filter(e_regionpol_6C == "6")))
+#ggplot(V_Modified, aes(x= v2cacamps_osp, y = v2x_libdem)) + geom_point() +
+        #geom_smooth(method = "lm", formula = y ~ x, geom = "smooth", color = "red")
+
+Eastern_Europe = V_Modified %>% select(country_name, year, v2cacamps_osp, v2smpolsoc_osp, e_regionpol_6C) %>% filter(e_regionpol_6C == "1")
+Latin_America = V_Modified %>% select(country_name, year, v2cacamps_osp, v2smpolsoc_osp, e_regionpol_6C) %>%filter(e_regionpol_6C == "2")
+Middle_East = V_Modified %>% select(country_name, year, v2cacamps_osp, v2smpolsoc_osp, e_regionpol_6C) %>%filter(e_regionpol_6C == "3")
+Africa = V_Modified %>% select(country_name, year, v2cacamps_osp, v2smpolsoc_osp, e_regionpol_6C) %>%filter(e_regionpol_6C == "4")
+Western_Europe = V_Modified %>% select(country_name, year, v2cacamps_osp, v2smpolsoc_osp, e_regionpol_6C) %>%filter(e_regionpol_6C == "5")
+Asia = V_Modified %>% select(country_name, year, v2cacamps_osp, v2smpolsoc_osp, e_regionpol_6C) %>%filter(e_regionpol_6C == "6")
+
+
+```
+
+```{r}
+
+GINI_Coef = read.csv("UN_GINI_Coef.csv")
+merged_GINI = merge(GINI_Coef, Just_Lib, by = c("country_name","year"))
+Eastern_Europe_GINI = merged_GINI %>% filter(e_regionpol_6C == "1")
+Latin_America_GINI = merged_GINI %>%filter(e_regionpol_6C == "2")
+Middle_East_GINI = merged_GINI %>%filter(e_regionpol_6C == "3")
+Africa_GINI = merged_GINI %>%filter(e_regionpol_6C == "4")
+Western_Europe_GINI = merged_GINI %>%filter(e_regionpol_6C == "5")
+Asia_GINI = merged_GINI %>%filter(e_regionpol_6C == "6")
+merged_GINI$e_regionpol_6C<-as.factor(merged_GINI$e_regionpol_6C)
+
+
+ggplot(merged_GINI, aes(x=year) ) +
+  geom_smooth(aes(y=Value)) + geom_smooth(aes(y=v2x_libdem*100))
+summary(lm(v2x_libdem~ Value, merged_GINI %>% filter(e_regionpol_6C == "5")))
 ```
