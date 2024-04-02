@@ -13,7 +13,7 @@ function(input, output, session){
                                "1996"=geo2$Year_1996,"1995"=geo2$Year_1995,"1994"=geo2$Year_1994,"1993"=geo2$Year_1993,
                                "1992"=geo2$Year_1992,"1991"=geo2$Year_1991,"1990"=geo2$Year_1990,"1989"=geo2$Year_1989,
                                "1988"=geo2$Year_1988,"1987"=geo2$Year_1987,"1986"=geo2$Year_1986,"1985"=geo2$Year_1985,
-                               "1984"=geo2$Year_1984,"1983"=geo2$Year_1983)f
+                               "1984"=geo2$Year_1984,"1983"=geo2$Year_1983)
   })
   
   output$map = renderLeaflet({ 
