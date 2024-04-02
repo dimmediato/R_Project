@@ -137,6 +137,12 @@ function(input, output, session){
                      
   })
   
+  observe({
+    if( is.null(input$govsupportcheck) ){
+      updateCheckboxGroupInput(session, "govsupportcheck", selected ="0")
+    }
+  })
+  
   output$partygraph2 <- renderPlot({
     ggplot(merged_data, aes(x = log(v2xpa_antiplural), y = v2x_libdem)) +
       geom_point(data = filtered1(), aes(group = v2pagovsup)) + stat_smooth(data = filtered1(), aes(group = v2pagovsup, fill = v2pagovsup),method = "lm", 
