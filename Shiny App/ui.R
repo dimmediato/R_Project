@@ -1,5 +1,29 @@
 # Load packages ----
-library(shiny)
+library(sf)
+library(dplyr)
+library(leaflet)
+library(ggplot2)
+library(geojsonio)
+library(tidyverse)
+library(leaflegend)
+library(shinyWidgets)
+geo2 = geojson_read("merged.geojson", what = "sp")
+V_Modified = readRDS("V_Modified.RDS")
+merged_data = readRDS("merged_data.RDS")
+average_merge = readRDS("average_merge.RDS")
+merged_GINI = readRDS("merged_GINI.RDS")
+Eastern_Europe = readRDS("Eastern_Europe.RDS")
+Latin_America = readRDS("Latin_America.RDS")
+Middle_East = readRDS("Middle_East.RDS")
+Africa = readRDS("Africa.RDS")
+Western_Europe = readRDS("Western_Europe.RDS")
+Asia = readRDS("Asia.RDS")
+Eastern_Europe_GINI = readRDS("Eastern_Europe_GINI.RDS")
+Latin_America_GINI = readRDS("Latin_America_GINI.RDS")
+Middle_East_GINI = readRDS("Middle_East_GINI.RDS")
+Africa_GINI = readRDS("Africa_GINI.RDS")
+Western_Europe_GINI = readRDS("Western_Europe_GINI.RDS")
+Asia_GINI = readRDS("Asia_GINI.RDS")
 # User interface ----
 ui <- navbarPage(title = "Democratic Backsliding",
                  tabPanel(title = "World Map",
@@ -146,7 +170,7 @@ ui <- navbarPage(title = "Democratic Backsliding",
                  
                  tabPanel(title = "Populism",
                           titlePanel("Words That Can Move Mountains"),
-                          sidebarLayout( sidebarPanel (conditionalPanel(
+                          sidebarLayout( sidebarPanel (width =2, conditionalPanel(
                             condition = "input.example == 1 || input.example == 2 || input.example == 3", checkboxGroupInput("govsupportcheck", h3("Government Support?"),
                                                                choices = list("Senior Partner (0)" = "0", "Junior Partner (1)" = "1",
                                                                               "In Gov., but not Represented (2)" = "2",
@@ -188,7 +212,7 @@ ui <- navbarPage(title = "Democratic Backsliding",
 
 tabPanel(title = "Polarization",
          titlePanel("Torn Apart From the Inside"), 
-         sidebarLayout(sidebarPanel( conditionalPanel( condition = "input.polarizationsubtab == 10",
+         sidebarLayout(sidebarPanel(width =2, conditionalPanel( condition = "input.polarizationsubtab == 10",
            pickerInput("polarizationpicker",
                        "Eastern Europe:", choices= unique(Eastern_Europe$country_name), 
                        options = pickerOptions(actionsBox = TRUE, liveSearch=T),  multiple = T, select = "Poland"),
@@ -242,7 +266,7 @@ tabPanel(title = "Polarization",
 ),
 tabPanel(title = "Inequality",
          titlePanel("Economic Inequality and Democratic Collapse"), 
-         sidebarLayout(sidebarPanel(conditionalPanel( condition = "input.GINIsubtab == 20", pickerInput("GINIpicker",
+         sidebarLayout(sidebarPanel(width =2, conditionalPanel( condition = "input.GINIsubtab == 20", pickerInput("GINIpicker",
                                                 "Eastern Europe:", choices= unique(Eastern_Europe_GINI$country_name), 
                                                 options = pickerOptions(title= "Select One", actionsBox = TRUE, liveSearch=T),  multiple = T),
                                     pickerInput("GINIpicker2",
