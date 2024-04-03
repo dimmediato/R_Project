@@ -1,3 +1,21 @@
+geo2 = geojson_read("merged.geojson", what = "sp")
+V_Modified = readRDS("V_Modified.RDS")
+merged_data = readRDS("merged_data.RDS")
+average_merge = readRDS("average_merge.RDS")
+merged_GINI = readRDS("merged_GINI.RDS")
+Eastern_Europe = readRDS("Eastern_Europe.RDS")
+Latin_America = readRDS("Latin_America.RDS")
+Middle_East = readRDS("Middle_East.RDS")
+Africa = readRDS("Africa.RDS")
+Western_Europe = readRDS("Western_Europe.RDS")
+Asia = readRDS("Asia.RDS")
+Eastern_Europe_GINI = readRDS("Eastern_Europe_GINI.RDS")
+Latin_America_GINI = readRDS("Latin_America_GINI.RDS")
+Middle_East_GINI = readRDS("Middle_East_GINI.RDS")
+Africa_GINI = readRDS("Africa_GINI.RDS")
+Western_Europe_GINI = readRDS("Western_Europe_GINI.RDS")
+Asia_GINI = readRDS("Asia_GINI.RDS")
+
 function(input, output, session){
   
   # Server Map ----  
@@ -137,6 +155,12 @@ function(input, output, session){
                      
   })
   
+  observe({
+    if( is.null(input$govsupportcheck) ){
+      updateCheckboxGroupInput(session, "govsupportcheck", selected ="0")
+    }
+  })
+  
   output$partygraph2 <- renderPlot({
     ggplot(merged_data, aes(x = log(v2xpa_antiplural), y = v2x_libdem)) +
       geom_point(data = filtered1(), aes(group = v2pagovsup)) + stat_smooth(data = filtered1(), aes(group = v2pagovsup, fill = v2pagovsup),method = "lm", 
@@ -195,8 +219,8 @@ filtered2 <- reactive({
   V_Modified %>% 
     filter(e_regionpol_6C==input$radio2)
 })
-output$polarizationregression <- renderPlot({
-  ggplot(V_Modified, aes(x = v2cacamps_osp, y = v2x_libdem)) +
+output$polarizationregression <- renderPlot({ 
+ ggplot(V_Modified, aes(x = v2cacamps_osp, y = v2x_libdem)) +
     geom_point(data = filtered2(), aes(group = e_regionpol_6C)) + geom_smooth(data = filtered2(), aes(group = e_regionpol_6C, fill = e_regionpol_6C),method = "lm", 
                                                                           formula = y ~ x, 
                                                                           color = input$radio2) + 
