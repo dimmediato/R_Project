@@ -12,6 +12,8 @@ Right from the beginning, the "target" can be changed, or even enhanced, by look
 
 Finally, and perhaps most importantly, machine learning could be used to potentially predict future "hot spots" or dangers across the world in relation to democratic backsliding. This is taking into account that the main blamed reasons are polarization, populism, anti-pluralism, and wealth inequality. The reason this factor is mentioned is because the concerning "trend" is occurring more frequently in the past few years than anywhere else, and the ideal would be to identify how to stop it.
 
+Feel free to check out the app yourself https://dimmediato.shinyapps.io/Democratic_Backsliding/ 
+
 # Citations
 Coppedge, Michael, John Gerring, Carl Henrik Knutsen, Staffan I. Lindberg, Jan Teorell, David
 Altman, Fabio Angiolillo, Michael Bernhard, Cecilia Borella, Agnes Cornell, M. Steven Fish,
