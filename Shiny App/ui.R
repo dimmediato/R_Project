@@ -1,4 +1,5 @@
 # Load packages ----
+library(shiny)
 library(sf)
 library(dplyr)
 library(leaflet)
