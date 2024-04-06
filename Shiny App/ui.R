@@ -39,7 +39,7 @@ ui <- navbarPage(title = "Democratic Backsliding",
                    type = "tabs",
                    tabPanel("Map",
                             id = "panel1",
-                            leafletOutput("map")),
+                            leafletOutput(height= 500, "map")),
                    tabPanel("Description", id = "panel2", 
                             sidebarPanel(width = 15, p("Democratic backsliding is the erosion or deterioration of democratic governance overtime. It is hopefully the goal of most countries to achieve the ideal liberal democracy, achieving the 1 score. 
              However, year by year, the institutions that used to uphold the liberal principle of democracy begin to fade, being replaced with a new tyranny of the state, dragging them further to total autocracy, the 0 score. 
