@@ -5,9 +5,9 @@ account: dimmediato
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11648202
-bundleId: 8447665
+bundleId: 8462886
 url: https://dimmediato.shinyapps.io/Democratic_Backsliding/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: merged_GINI|R_Data
+ignoredFiles: R_Data
